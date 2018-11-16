@@ -4,7 +4,7 @@ library(ggplot2)
 
 
 #GROUP LEVEL
-group_level_reproducibility <- read_csv("~/Dropbox/1_Projects/1_Research/BASC_Tech/Data/ALLDATA_group_level_reproducibility_.csv")
+group_level_reproducibility <- read_csv("~/git_repo/BASC_Tech_paper/Data/ALLDATA_group_level_reproducibility_.csv")
 
 
 #/Users/aki.nikolaidis/git_repo/PyBASC/Updated_IBS_GBS_Jovo4_20_2018.csv')
@@ -39,7 +39,7 @@ ggplot(Data, aes(x=bootstrap, y=datavar, fill=scantime)) +
 
 
 ## INDIVIDUAL LEVEL 
-Data_ind<- read_csv("~/Dropbox/1_Projects/1_Research/BASC_Tech/Data/ALLDATA_individual_reproducibility_.csv")
+Data_ind<- read_csv("~/git_repo/BASC_Tech_paper//Data/ALLDATA_individual_reproducibility_.csv")
 #/Users/aki.nikolaidis/git_repo/PyBASC/Updated_IBS_GBS_Jovo4_20_2018.csv')
 #Data_ind<-ind_level_reproducibility
 datavar_ind<-Data_ind$ism_repref_corr

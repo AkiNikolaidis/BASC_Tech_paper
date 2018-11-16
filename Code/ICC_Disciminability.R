@@ -27,8 +27,8 @@ library(readr,mgc,ggplot2)
   # 5- COMPLETE FOR ALL HALFMIN DATA
   # 6- RINSE & REPEAT FOR ONEMIN THROUGH TWENTYFIVE MIN
   
-dataFiles<- lapply(Sys.glob("~/Dropbox/1_Projects/1_Research/BASC_Tech/Data/testing/Discriminability*.csv"), read.csv, header=FALSE)
-file_names<-Sys.glob("~/Dropbox/1_Projects/1_Research/BASC_Tech/Data/testing/Discriminability*.csv")
+dataFiles<- lapply(Sys.glob("~/git_repo/BASC_Tech_paper/Data/testing/Discriminability*.csv"), read.csv, header=FALSE)
+file_names<-Sys.glob("~/git_repo/BASC_Tech_paper/Data/testing/Discriminability*.csv")
 rerun<- regmatches(file_names, regexpr("*_[0-9]*_rerun*", file_names))
 rerun_num<-regmatches(rerun, regexpr("_*[0-9]*_", rerun))
 bootstrap<- regmatches(file_names, regexpr("*_[0-9]*_bootstraps", file_names))

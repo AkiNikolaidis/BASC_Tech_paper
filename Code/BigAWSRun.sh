@@ -9,8 +9,6 @@ nohup bash AWSBash.sh>awsoutput.txt
 #TEST
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN HalfMinData
 #Download half min nifti data
@@ -28,8 +26,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/halfmintest.txt s3://mri-analysis/new-ba
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN oneMinData
 #Download one min nifti data
@@ -47,8 +43,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/onemintest.txt s3://mri-analysis/new-bas
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN threeMinData
 #Download three min nifti data
@@ -66,8 +60,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/threemintest.txt s3://mri-analysis/new-b
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN fiveMinData
 #Download five min nifti data
@@ -85,8 +77,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/fivemintest.txt s3://mri-analysis/new-ba
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN tenMinData
 #Download ten min nifti data
@@ -104,8 +94,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/tenmintest.txt s3://mri-analysis/new-bas
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN fifteenMinData
 #Download fifteen min nifti data
@@ -123,8 +111,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/fifteenmintest.txt s3://mri-analysis/new
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN twentyMinData
 #Download twenty min nifti data
@@ -142,8 +128,6 @@ aws s3 cp /home/ec2-user/PyBASC_outputs/twentymintest.txt s3://mri-analysis/new-
 
 
 #!/bin/bash
-export AWS_ACCESS_KEY_ID=AKIAIDAJHYV7CQ4UGMIA
-export AWS_SECRET_ACCESS_KEY=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
 
 #RUN twentyfiveMinData
 #Download twentyfive min nifti data
