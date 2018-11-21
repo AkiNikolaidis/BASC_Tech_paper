@@ -1,0 +1,93 @@
+analysis_ID: threemintest
+home: /home/ec2-user
+run: True
+
+proc_mem:
+    - 30
+    - 220
+
+    
+reruns: 30
+
+affinity_thresh: 0.0
+
+blocklength_list:
+    - 1 
+    
+dataset_bootstrap_list:
+    - 1
+    - 100
+    - 200
+    - 400
+    - 800
+
+timeseries_bootstrap_list:
+    - 1
+    - 100
+    - 200
+    - 400
+    - 800
+
+group_dim_reduce: False
+
+n_clusters_list:
+    - 4
+#    - 4
+#    - 6
+#    - 8
+#    - 10
+#    - 12
+#    - 14
+#    - 16
+    
+output_sizes:
+    - 1600
+
+similarity_metric_list:
+    - correlation
+    # - euclidean
+    # - cityblock
+    # - cosine
+
+cluster_methods:
+    - ward
+
+roi_mask_file: masks/Full_BG_Sim_3mm.nii.gz
+
+cross_cluster: False
+cross_cluster_mask_file: masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz
+
+
+
+subject_file_list:
+        - /home/ec2-user/threemindata/0025427_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025428_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025429_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025430_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025431_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025432_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025433_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025434_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025435_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025436_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025437_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025438_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025439_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025440_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025441_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025442_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025443_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025444_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025445_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025446_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025447_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025448_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025449_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025450_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025451_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025452_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025453_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025454_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025455_gsr-1_scrub-0.nii.gz
+        - /home/ec2-user/threemindata/0025456_gsr-1_scrub-0.nii.gz
+
