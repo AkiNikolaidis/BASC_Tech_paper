@@ -1,0 +1,89 @@
+analysis_ID: halfmintest1
+home: /home/ec2-user
+run: True
+
+proc_mem:
+    - 4
+    - 24
+
+    
+reruns: 1
+
+affinity_thresh: 0.0
+
+blocklength_list:
+    - 1 
+    
+dataset_bootstrap_list:
+    - 1
+
+timeseries_bootstrap_list:
+    - 1
+
+group_dim_reduce: False
+
+n_clusters_list:
+    - 4
+#    - 4
+#    - 6
+#    - 8
+#    - 10
+#    - 12
+#    - 14
+#    - 16
+    
+output_sizes:
+    - 1600
+
+similarity_metric_list:
+    - correlation
+    # - euclidean
+    # - cityblock
+    # - cosine
+
+cluster_methods:
+    - ward
+
+roi_mask_file: $PYBASC/masks/Full_BG_Sim_3mm.nii.gz
+
+cross_cluster: False
+cross_cluster_mask_file: $PYBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz
+
+
+
+subject_file_list:
+
+    - /home/ec2-user/randomgrabs/sub_27.nii.gz
+    - /home/ec2-user/randomgrabs/sub_28.nii.gz
+    - /home/ec2-user/randomgrabs/sub_29.nii.gz
+    - /home/ec2-user/randomgrabs/sub_30.nii.gz
+    - /home/ec2-user/randomgrabs/sub_31.nii.gz
+    - /home/ec2-user/randomgrabs/sub_32.nii.gz
+    - /home/ec2-user/randomgrabs/sub_33.nii.gz
+    - /home/ec2-user/randomgrabs/sub_34.nii.gz
+    - /home/ec2-user/randomgrabs/sub_35.nii.gz
+    - /home/ec2-user/randomgrabs/sub_36.nii.gz
+    - /home/ec2-user/randomgrabs/sub_37.nii.gz
+    - /home/ec2-user/randomgrabs/sub_38.nii.gz
+    - /home/ec2-user/randomgrabs/sub_39.nii.gz
+    - /home/ec2-user/randomgrabs/sub_40.nii.gz
+    - /home/ec2-user/randomgrabs/sub_41.nii.gz
+    - /home/ec2-user/randomgrabs/sub_42.nii.gz
+    - /home/ec2-user/randomgrabs/sub_43.nii.gz
+    - /home/ec2-user/randomgrabs/sub_44.nii.gz
+    - /home/ec2-user/randomgrabs/sub_45.nii.gz
+    - /home/ec2-user/randomgrabs/sub_46.nii.gz
+    - /home/ec2-user/randomgrabs/sub_47.nii.gz
+    - /home/ec2-user/randomgrabs/sub_48.nii.gz
+    - /home/ec2-user/randomgrabs/sub_49.nii.gz
+    - /home/ec2-user/randomgrabs/sub_50.nii.gz
+    - /home/ec2-user/randomgrabs/sub_51.nii.gz
+    - /home/ec2-user/randomgrabs/sub_52.nii.gz
+    - /home/ec2-user/randomgrabs/sub_53.nii.gz
+    - /home/ec2-user/randomgrabs/sub_54.nii.gz
+    - /home/ec2-user/randomgrabs/sub_55.nii.gz
+    - /home/ec2-user/randomgrabs/sub_56.nii.gz
+
+
+
+
