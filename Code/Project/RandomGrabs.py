@@ -5,8 +5,8 @@ import nilearn as ni
 import sklearn as sk
 
 
-outputlength=15 # How big the final output dataset will be 
-randomdatagrab=15 # How big the random grabs are 
+outputlength=1500 # How big the final output dataset will be 
+randomdatagrab=150 # How big the random grabs are 
 
 
 #outputlength=450 #fifteenmins

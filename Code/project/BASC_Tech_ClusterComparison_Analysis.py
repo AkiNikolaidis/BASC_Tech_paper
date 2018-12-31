@@ -41,6 +41,8 @@ Spatial Correlation of GSM [group analysis (already done previously)]
 
 #%%
 
+#SIMILARITY ANALYSES
+
 import PyBASC.utils as utils
 import PyBASC.basc as basc
 import numpy as np
@@ -55,134 +57,141 @@ from sklearn.metrics import adjusted_rand_score
 reruns=10
 rerun_list= np.linspace(1,reruns,reruns)
 
-#bootstrap_list= ['1','100','200','400','800']
-bootstrap_list=['1','100','200','400','800']
+bootstrap_list=['1', '10','100','200','400','800']
+scantimelist=['halfmintest','onemintest','threemintest','fivemintest','tenmintest','fifteenmintest','twentymintest','twentyfivemintest']
+
+#scantimelist=['fifteenmintest']
+#bootstrap_list=['10','100','200','400','800']
 
 
-homedir= '/home/ec2-user/similarity'
+homedir= '/home/ec2-user/alldata' # '/Users/aki.nikolaidis/PyBASC_outputs'
+
 
 GSMdir='/workflow_output/basc_workflow_runner/basc/join_group_stability/group_stability_matrix.npy'
 labelsdir='/workflow_output/clusters_G/clusters_G.npy'
 
-group_level_reproducibility=pd.DataFrame(columns=['rerun','bootstrap', 'group_label_acc', 'gsm_repref_corr', 'mean_rep_ism_gsm_corr', 'stdev_rep_ism_gsm_corr'])
-all_individual_reproducibility=pd.DataFrame(columns=['rerun','bootstrap', 'subject', 'ism_repref_corr', 'sub_rep_ism_gsm_corr', 'sub_ref_ism_gsm_corr'])
+group_level_reproducibility=pd.DataFrame(columns=['scantime', 'rerun','bootstrap', 'group_label_acc', 'gsm_repref_corr', 'mean_rep_ism_gsm_corr', 'stdev_rep_ism_gsm_corr'])
+all_individual_reproducibility=pd.DataFrame(columns=['scantime', 'rerun','bootstrap', 'subject', 'ism_repref_corr', 'sub_rep_ism_gsm_corr', 'sub_ref_ism_gsm_corr'])
 
 
+# GROUP LEVEL ANALYSIS
+for scantime in scantimelist:
+    for rerun in rerun_list:
+        for bootstrap in bootstrap_list:
+            if bootstrap =='1':
+                repdir=homedir + '/randomgrabs_0BS/' + scantime + str(int(rerun)) + '/Run_1_1600_correlation_ward_clusters-4_IndBS-1_block-1'
+            else:
+                repdir=homedir + '/' + scantime+ '/Run_'+str(int(rerun))+'_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
+                
 
-for rerun in rerun_list:
-    for bootstrap in bootstrap_list:
-        if bootstrap =='1':
-            rerun=1
+            print(str(scantime) + 'scantime')
+            print(str(bootstrap) + 'bootstrap')
+            print(str(rerun) + 'rerun')
+            refdir=homedir + '/reftest/reftest/Run_1_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
+            
+            ref_gsm_dir = refdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
+            rep_gsm_dir = repdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
+            
+            ref_grp_labels_dir = refdir + '/workflow_output/clusters_G/clusters_G.npy'
+            rep_grp_labels_dir = repdir + '/workflow_output/clusters_G/clusters_G.npy'
+            
+            group_label_acc = adjusted_rand_score(np.load(ref_grp_labels_dir), np.load(rep_grp_labels_dir))
+            gsm_repref_corr = 1- scipy.spatial.distance.correlation(scipy.sparse.load_npz(ref_gsm_dir).toarray().ravel(),scipy.sparse.load_npz(rep_gsm_dir).toarray().ravel())
+            
+            rep_ism_gsm_corr=np.load(repdir + '/workflow_output/basc_workflow_runner/basc/join_group_stability/ism_gsm_corr.npy')
+            mean_rep_ism_gsm_corr=rep_ism_gsm_corr.ravel().mean()
+            stdev_rep_ism_gsm_corr=rep_ism_gsm_corr.ravel().std()
+            
+            newgroupdata=pd.DataFrame([[scantime, rerun, bootstrap, group_label_acc, gsm_repref_corr, mean_rep_ism_gsm_corr, stdev_rep_ism_gsm_corr]], columns=['scantime', 'rerun','bootstrap', 'group_label_acc', 'gsm_repref_corr', 'mean_rep_ism_gsm_corr', 'stdev_rep_ism_gsm_corr'])
+            groupframes=[group_level_reproducibility,newgroupdata]
+            group_level_reproducibility=pd.concat(groupframes)
+            group_level_reproducibility.to_csv('/home/ec2-user/similarity/group_level_reproducibility.csv')
+            
+            
+            
+            #BEGGINING SUMMARY LEVEL INDIVIDUAL  ANALYSIS
+            ref_ind_grp_labels_dir = refdir + '/workflow_output/ind_group_cluster_labels/'
+            rep_ind_grp_labels_dir = repdir + '/workflow_output/ind_group_cluster_labels/'
+            
+            ref_ism_dir= refdir + '/workflow_output/basc_workflow_runner/basc/individual_stability_matrices/mapflow/'
+            rep_ism_dir= repdir + '/workflow_output/basc_workflow_runner/basc/individual_stability_matrices/mapflow/'
             
         
-        # GROUP LEVEL ANALYSIS
-        refdir='/Users/aki.nikolaidis/Downloads/halfmintest/Run_'+str(int(rerun))+'_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
-        repdir='/Users/aki.nikolaidis/Downloads/onemintest/Run_'+str(int(rerun))+'_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
-        
-        ref_gsm_dir = refdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
-        rep_gsm_dir = repdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
-        
-        ref_grp_labels_dir = refdir + '/workflow_output/clusters_G/clusters_G.npy'
-        rep_grp_labels_dir = repdir + '/workflow_output/clusters_G/clusters_G.npy'
-        
-        group_label_acc = adjusted_rand_score(np.load(ref_grp_labels_dir), np.load(rep_grp_labels_dir))
-        gsm_repref_corr = 1- scipy.spatial.distance.correlation(scipy.sparse.load_npz(ref_gsm_dir).toarray().ravel(),scipy.sparse.load_npz(rep_gsm_dir).toarray().ravel())
-        
-        rep_ism_gsm_corr=np.load(repdir + '/workflow_output/basc_workflow_runner/basc/join_group_stability/ism_gsm_corr.npy')
-        mean_rep_ism_gsm_corr=rep_ism_gsm_corr.ravel().mean()
-        stdev_rep_ism_gsm_corr=rep_ism_gsm_corr.ravel().std()
-        
-        newgroupdata=pd.DataFrame([[rerun, bootstrap, group_label_acc, gsm_repref_corr, mean_rep_ism_gsm_corr, stdev_rep_ism_gsm_corr]], columns=['rerun','bootstrap', 'group_label_acc', 'gsm_repref_corr', 'mean_rep_ism_gsm_corr', 'stdev_rep_ism_gsm_corr'])
-        groupframes=[group_level_reproducibility,newgroupdata]
-        group_level_reproducibility=pd.concat(groupframes)
-        group_level_reproducibility.to_csv(homedir+'/group_level_reproducibility_.csv')
-        
-        
-        
-        #BEGGINING SUMMARY LEVEL INDIVIDUAL  ANALYSIS
-        ref_ind_grp_labels_dir = refdir + '/workflow_output/basc_workflow_runner/basc/individual_group_clustered_maps/'
-        rep_ind_grp_labels_dir = repdir + '/workflow_output/basc_workflow_runner/basc/individual_group_clustered_maps/'
-        
-        ref_ism_dir= refdir + '/workflow_output/basc_workflow_runner/basc/individual_stability_matrices/mapflow/'
-        rep_ism_dir= repdir + '/workflow_output/basc_workflow_runner/basc/individual_stability_matrices/mapflow/'
-        
+            os.chdir(ref_ind_grp_labels_dir)
+            subdirs_all = [x[1] for x in os.walk(ref_ind_grp_labels_dir)]                                                                            
+            subdirs = subdirs_all[0]
+            
+            sublist = pd.DataFrame(columns=['sub_ID'])
+            allrep_labels = pd.DataFrame()
+            allref_labels = pd.DataFrame()   
+            
+            allrep_ism = pd.DataFrame()
+            allref_ism = pd.DataFrame()
+            
+            all_labels = pd.DataFrame()
+            all_ism = pd.DataFrame()
     
-        os.chdir(ref_ind_grp_labels_dir)
-        subdirs_all = [x[1] for x in os.walk(ref_ind_grp_labels_dir)]                                                                            
-        subdirs = subdirs_all[2]
-        
-        sublist = pd.DataFrame(columns=['sub_ID'])
-        allrep_labels = pd.DataFrame()
-        allref_labels = pd.DataFrame()   
-        
-        allrep_ism = pd.DataFrame()
-        allref_ism = pd.DataFrame()
-        
-        all_labels = pd.DataFrame()
-        all_ism = pd.DataFrame()
-
-        
-        #BEGGINING INDIVIDUAL LEVEL ANALYSIS
-        for subdir in subdirs:
-            print(subdir)
-            sublabel  = subdir.split('_')[4]
-            subject = np.int(sublabel[4:])
             
+            #BEGGINING INDIVIDUAL LEVEL ANALYSIS
+            for subdir in subdirs:
+                print(subdir)
+                sublabel  = subdir.split('_')[4]
+                subject = np.int(sublabel[4:])
+                
+        
+                sublist.append({'sub_ID':np.int(subject)},ignore_index=True)
+        
+                #labels (ADD when NPY is GETTING SAVED)
+                rep_ind_label = pd.DataFrame(np.load(rep_ind_grp_labels_dir + '_individual_group_clustered_maps'+ str(subject)+ '/ind_group_cluster_labels.npy'))
+                ref_ind_label = pd.DataFrame(np.load(ref_ind_grp_labels_dir + '_individual_group_clustered_maps'+ str(subject)+ '/ind_group_cluster_labels.npy'))
+                
+                #calculate label Adjusted Rand Score
+                ref_rep_label_ind_ARI=adjusted_rand_score(np.asarray(rep_ind_label).ravel(), np.asarray(ref_ind_label).ravel())
+        
+                #ISM
+                temp_rep_ism = scipy.sparse.load_npz(rep_ism_dir+'_individual_stability_matrices' + str(subject) + '/individual_stability_matrix.npz').toarray()
+                temp_ref_ism = scipy.sparse.load_npz(ref_ism_dir+'_individual_stability_matrices' + str(subject) + '/individual_stability_matrix.npz').toarray()
+                rep_ism = pd.DataFrame(np.array(temp_rep_ism[np.triu_indices(4332, k = 1)]))
+                ref_ism = pd.DataFrame(np.array(temp_ref_ism[np.triu_indices(4332, k = 1)]))
+                
+                #calculate ISM Spatial Correlation
+                
+                ism_repref_corr=1- scipy.spatial.distance.correlation(rep_ism.T,ref_ism.T)
+                
+                newdata=pd.DataFrame([[scantime, rerun, bootstrap, subject, ism_repref_corr, ref_rep_label_ind_ARI]],columns=['scantime','rerun', 'bootstrap', 'subject', 'ism_repref_corr', 'ref_rep_indgrp_label_ARI'])
+                frames=[all_individual_reproducibility, newdata]
+                all_individual_reproducibility=pd.concat(frames)
+                
     
-            sublist.append({'sub_ID':np.int(subject)},ignore_index=True)
+                all_individual_reproducibility.to_csv('/home/ec2-user/similarity/all_individual_reproducibility.csv')
+                
+                
+                #DISCRIMINABILITY CALCULATIONS
+                
+                #Grouping for Discriminability
+                #grouping_rep_labels = [allrep_labels,rep_ind_label]
+                #grouping_ref_labels = [allref_labels,ref_ind_label]
+                grouping_rep_ism = [allrep_ism,rep_ism]
+                grouping_ref_ism = [allref_ism,ref_ism]
+                
+                #Concatenation for Discriminability
+                #allrep_labels = pd.concat(grouping_rep_labels, axis=1)
+                #allref_labels = pd.concat(grouping_ref_labels, axis=1)
     
-            #labels (ADD when NPY is GETTING SAVED)
-            #rep_ind_label = pd.DataFrame(np.load(rep_ind_grp_labels_dir + '_individual_group_clustered_maps'+ str(subject)+ '/ind_group_cluster_labels.npy'))
-            #ref_ind_label = pd.DataFrame(np.load(ref_ind_grp_labels_dir + '_individual_group_clustered_maps'+ str(subject)+ '/ind_group_cluster_labels.npy'))
+                allrep_ism = pd.concat(grouping_rep_ism, axis=1)
+                allref_ism = pd.concat(grouping_ref_ism, axis=1)
+                
             
-            #calculate label Adjusted Rand Score
-            #ref_rep_label_ind_ARI=adjusted_rand_score(np.asarray(rep_ind_label).ravel(), np.asarray(ref_ind_label).ravel())
-    
-            #ISM
-            temp_rep_ism = scipy.sparse.load_npz(rep_ism_dir+'_individual_stability_matrices' + str(subject) + '/individual_stability_matrix.npz').toarray()
-            temp_ref_ism = scipy.sparse.load_npz(ref_ism_dir+'_individual_stability_matrices' + str(subject) + '/individual_stability_matrix.npz').toarray()
-            rep_ism = pd.DataFrame(np.array(temp_rep_ism[np.triu_indices(4332, k = 1)]))
-            ref_ism = pd.DataFrame(np.array(temp_ref_ism[np.triu_indices(4332, k = 1)]))
-            
-            #calculate ISM Spatial Correlation
-            
-            ism_repref_corr=scipy.spatial.distance.correlation(rep_ism.T,ref_ism.T)
-            
-            
-            newdata=pd.DataFrame([[rerun, bootstrap, subject, ism_repref_corr]],columns=['rerun', 'bootstrap', 'subject', 'ism_repref_corr'])
-            frames=[all_individual_reproducibility, newdata]
-            all_individual_reproducibility=pd.concat(frames)
-            
-
-            all_individual_reproducibility.to_csv(homedir+'/all_individual_reproducibility_.csv')
-            
-            
-            #DISCRIMINABILITY CALCULATIONS
-            
-            #Grouping for Discriminability
-            #grouping_rep_labels = [allrep_labels,rep_ind_label]
-            #grouping_ref_labels = [allref_labels,ref_ind_label]
-            grouping_rep_ism = [allrep_ism,rep_ism]
-            grouping_ref_ism = [allref_ism,ref_ism]
-            
-            #Concatenation for Discriminability
-            #allrep_labels = pd.concat(grouping_rep_labels, axis=1)
-            #allref_labels = pd.concat(grouping_ref_labels, axis=1)
-
-            allrep_ism = pd.concat(grouping_rep_ism, axis=1)
-            allref_ism = pd.concat(grouping_ref_ism, axis=1)
-            
-        
-       
-       
-            
-        #CALCULATING INDIVIDUAL LEVEL SPATIAL CORRELATIONS FOR DISCRIMINABILITY
-            
-        all_ism=[allrep_ism,allref_ism]
-        all_ism=pd.concat(all_ism, axis=1)
-        spatialcorr=np.corrcoef(all_ism.T)
-        filename1=homedir+'/Discriminability_SpatialCorr_'+str(int(rerun))+'.csv'
-        np.savetxt(filename1, spatialcorr, delimiter=",")
+           
+           
+                
+            #CALCULATING INDIVIDUAL LEVEL SPATIAL CORRELATIONS FOR DISCRIMINABILITY
+                
+            all_ism=[allrep_ism,allref_ism]
+            all_ism=pd.concat(all_ism, axis=1)
+            spatialcorr=np.corrcoef(all_ism.T)
+            filename1='/home/ec2-user/similarity/Discriminability_SpatialCorr_'+str(scantime)+str(int(bootstrap))+'bootstraps'+str(int(rerun))+'rerun.csv'
+            np.savetxt(filename1, spatialcorr, delimiter=",")
 
 
 
@@ -280,20 +289,30 @@ cluster_comparisons.to_csv('cluster_comparisons.csv')
    
 #CREATING INDIVIDUALIZED PARCELLATIONS FOR EVERY FILE
 import os
+import sys
 import numpy as np
 import PyBASC.utils as utils
 import PyBASC.basc as basc
 import scipy.sparse
 import pandas as pd
-    
-reruns=2
+
+reruns=10
 rerun_list= np.linspace(1,reruns,reruns)
 
-#bootstrap_list= ['1','100','200','400','800']
-bootstrap_list=['100']
+bootstrap_list= ['1','100','200','400','800']
 
 
-homedir= '/home/ec2-user/similarity'
+homedir= '/home/ec2-user/repdata'
+
+#TESTING INFO
+#homedir= '/Users/aki.nikolaidis/Downloads/halfmintest'
+#rerun=1
+#bootstrap=100
+#Run_1_1600_correlation_ward_clusters-4_IndBS-100_block-1
+#/Users/aki.nikolaidis/Downloads/onemintest/Run_1_1600_correlation_ward_clusters-4_IndBS-100_block-1
+#TESTING INFO
+
+
 
 GSMdir='/workflow_output/basc_workflow_runner/basc/join_group_stability/group_stability_matrix.npy'
 labelsdir='/workflow_output/clusters_G/clusters_G.npy'
@@ -302,47 +321,189 @@ group_level_reproducibility=pd.DataFrame(columns=['rerun','bootstrap', 'group_la
 all_individual_reproducibility=pd.DataFrame(columns=['rerun','bootstrap', 'subject', 'ism_repref_corr', 'sub_rep_ism_gsm_corr', 'sub_ref_ism_gsm_corr'])
 
 
+#UPDATE- SAVE DATA IN workflow_output/ind_group_cluster_labels/_individual_group_clustered_maps0
 
 for rerun in rerun_list:
     for bootstrap in bootstrap_list:
-        if bootstrap =='1':
-            rerun=1
+        if (bootstrap =='1' and rerun>1):
+            continue
     
-    #FOR LOOP OVER ALL RUNS, FOR LOOP OVER ALL SUBJECTS
-    repdir='/Users/aki.nikolaidis/Downloads/onemintest/Run_'+str(int(rerun))+'_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
+        #FOR LOOP OVER ALL RUNS, FOR LOOP OVER ALL SUBJECTS
+        repdir = homedir + '/Run_'+str(int(rerun))+'_1600_correlation_ward_clusters-4_IndBS-' + str(int(bootstrap)) + '_block-1'
+        labelsdir= repdir + '/workflow_output/ind_group_cluster_labels'
+        rep_gsm_dir = repdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
+        ismdir= repdir + '/workflow_output/basc_workflow_runner/basc/individual_stability_matrices/mapflow'
+        clusters_G = np.load(repdir + '/workflow_output/clusters_G/clusters_G.npy')
         
-    rep_gsm_dir = repdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
-    ismdir= repdir + '/workflow_output/basc_workflow_runner/basc/individual_stability_matrices/mapflow/'
-    clusters_G = np.load(repdir + '/workflow_output/clusters_G/clusters_G.npy')
+        os.makedirs(labelsdir, 0o775)
+        #import pdb;pdb.set_trace()
+        os.chdir(ismdir)
+        subdirs_all = [x[1] for x in os.walk(ismdir)]                                                                            
+        subdirs = subdirs_all[0]
+        
+        for subdir in subdirs:
+                print(subdir)
+                sublabel  = subdir.split('_')[3]
+                subject = np.int(sublabel[8:])
+                print(subject)
+                
+                #ISM
+                temp_rep_ism = scipy.sparse.load_npz(ismdir +'/_individual_stability_matrices' + str(subject) + '/individual_stability_matrix.npz').toarray()
+        
+                cluster_ids = np.unique(clusters_G)
+                cluster_voxel_scores, k_mask = \
+                    utils.cluster_matrix_average(temp_rep_ism, clusters_G)
+                
+                cluster_voxel_scores = cluster_voxel_scores.astype("uint8")
+                individualized_group_cluster_npy = np.argmax(cluster_voxel_scores, axis=0) + 1
+                #ind_group_cluster_labels_file = os.path.join(
+                #os.getcwd(), '_individual_stability_matrices' + str(subject) + '/ind_group_cluster_labels.npy')
+                #import pdb; pdb.set_trace()
+                ind_group_cluster_labels_file = os.path.join(
+                labelsdir + '/_individual_group_clustered_maps' + str(subject) + '/ind_group_cluster_labels.npy')
+                
+                subj_folder=os.path.join(labelsdir+'/_individual_group_clustered_maps'+ str(subject))
+                os.makedirs(subj_folder, 0o775)
+                
+                np.save(ind_group_cluster_labels_file, individualized_group_cluster_npy)
+
+#os.mkdir('./hello',777)
+#
+#import os
+#oldmask = os.umask (0o22)
+#fh1 = os.open ("qq1.junk", os.O_CREAT, 0o777)
+#fh2 = os.open ("qq2.junk", os.O_CREAT, 0o022)
+#os.umask (oldmask)
+#os.close (fh1)
+#os.close (fh2)
+
+
+#%% CALCULATING SIMILARITY FOR CORRELATION MATRIX FIGURE
+import numpy as np
+import pandas as pd
+from sklearn.metrics import adjusted_rand_score
+
+
+ref0=np.load('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/Ref_0BS_Labels.npy')
+rep0_10mins=np.load('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/Rep10Mins_0BS_Labels.npy')
+rep0_25mins=np.load('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/Rep25Mins_0BS_Labels.npy')
+
+ref800=np.load('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/Ref_800BS_Labels.npy')
+rep800_10mins=np.load('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/Rep10Mins_800BS_Labels.npy')
+rep800_25mins=np.load('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/Rep25Mins_800BS_Labels.npy')
+
+
+alldata=[ref0,rep0_10mins,rep0_25mins,ref800,rep800_10mins,rep800_25mins]
+similarity=np.zeros((len(alldata),len(alldata)))
+for k in range(len(alldata)):
+
+    for i in range(len(alldata)):
+        similarity[k,i]=adjusted_rand_score(alldata[k].ravel(),alldata[i].ravel())
+
+similarity=pd.DataFrame(similarity)
+similarity.to_csv('/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/ClusterImages/similarity.csv')
+#%% LARGE RANDOM GRABS
+
+import numpy as np
+import nibabel as nb
+import scipy as sp
+import nilearn as ni
+import sklearn as sk
+
+randomdatagrab=15
+outputlength=300 #tenmins
+#outputlength=450 #fifteenmins
+#outputlength=600 #twentymins
+#outputlength=750 #twentyfivemins
+
+outputdir='/Users/aki.nikolaidis/randomgrabs_halfmin'
+#
+#subject_file_list = ['/Users/aki.nikolaidis/git_repo/PyBASC/PyBASC/data/sub_0corr_0.05_noise_2_TRs_100.nii.gz',
+#                     '/Users/aki.nikolaidis/git_repo/PyBASC/PyBASC/data/sub_1corr_0.05_noise_2_TRs_100.nii.gz',
+#                     '/Users/aki.nikolaidis/git_repo/PyBASC/PyBASC/data/sub_2corr_0.05_noise_2_TRs_100.nii.gz',
+#                     '/Users/aki.nikolaidis/git_repo/PyBASC/PyBASC/data/sub_3corr_0.05_noise_2_TRs_100.nii.gz']
+
+subject_file_list =    ['/Users/aki.nikolaidis/fifteenmindata/0025427_gsr-1_scrub-0.nii.gz',
+                        '/Users/aki.nikolaidis/fifteenmindata/0025428_gsr-1_scrub-0.nii.gz',
+                        '/Users/aki.nikolaidis/fifteenmindata/0025429_gsr-1_scrub-0.nii.gz']#,
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025430_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025431_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025432_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025433_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025434_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025435_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025436_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025437_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025438_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025439_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025440_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025441_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025442_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025443_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025444_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025445_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025446_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025447_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025448_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025449_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025450_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025451_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025452_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025453_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025454_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025455_gsr-1_scrub-0.nii.gz',
+#                        '/Users/aki.nikolaidis/fifteenmindata/0025456_gsr-1_scrub-0.nii.gz']
+
+i=27
+
+for subject in subject_file_list:
+    print(subject)
+    subrandidx=[]
+    fullsub=nb.load(subject).get_data()
+    nii = nb.load(subject)
+    length=fullsub.shape[3]
+    np.random.randint(1,length)
+    loops=outputlength//randomdatagrab
+    newsubdata=np.zeros((fullsub.shape[0],fullsub.shape[1],fullsub.shape[2],1))
+    for x in range(loops):
+        temp_rand=np.random.randint(1,(length-randomdatagrab))
+        subrandidx.append(temp_rand)
+
     
-    os.chdir(ismdir)
-    subdirs_all = [x[1] for x in os.walk(ismdir)]                                                                            
-    subdirs = subdirs_all[0]
+    for x in range(len(subrandidx)):
+        random_grab=fullsub[:,:,:,subrandidx[x]:(subrandidx[x]+randomdatagrab)]
+        newsubdata=np.concatenate((newsubdata,random_grab),axis=3)
+
+    newsubdata=newsubdata[:,:,:,1:]
     
-    for subdir in subdirs:
-            print(subdir)
-            sublabel  = subdir.split('_')[3]
-            subject = np.int(sublabel[8:])
-            print(subject)
-            
-            #ISM
-            temp_rep_ism = scipy.sparse.load_npz(ismdir +'_individual_stability_matrices' + str(subject) + '/individual_stability_matrix.npz').toarray()
+    img = nb.Nifti1Image(
+        newsubdata,
+        header=nii.get_header(),
+        affine=nii.get_affine()
+    )
     
-            cluster_ids = np.unique(clusters_G)
-            cluster_voxel_scores, k_mask = \
-                utils.cluster_matrix_average(temp_rep_ism, clusters_G)
-            
-            cluster_voxel_scores = cluster_voxel_scores.astype("uint8")
-            individualized_group_cluster_npy = np.argmax(cluster_voxel_scores, axis=0) + 1
-            ind_group_cluster_labels_file = os.path.join(
-            os.getcwd(), '_individual_stability_matrices' + str(subject) + '/ind_group_cluster_labels.npy')
-            np.save(ind_group_cluster_labels_file, individualized_group_cluster_npy)
+    filename=outputdir + '/sub_' + str(i) + '.nii.gz' 
+    
+    #img_file = os.path.join(os.getcwd(), filename)
+    img.to_filename(filename)
+    i=i+1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #%%
-
-
-
 #CCN Analysis
 #BOTH GROUP AND INDIVIDUAL LEVEL REPRODUCIBILITY
 import PyBASC.utils as utils

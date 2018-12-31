@@ -781,8 +781,107 @@ rm /home/ec2-user/randomgrabs/*
 nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
 nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
 
+#FIFTY MINUTE DATA PREP
+sed 's/outputlength=750/outputlength=1500/' /home/ec2-user/RandomGrabs.py>>/home/ec2-user/RandomGrabs2.py
+rm /home/ec2-user/RandomGrabs.py
+cp /home/ec2-user/RandomGrabs2.py /home/ec2-user/RandomGrabs.py
+rm /home/ec2-user/RandomGrabs2.py
+
+sed 's/randomdatagrab=150/randomdatagrab=150/' /home/ec2-user/RandomGrabs.py>>/home/ec2-user/RandomGrabs2.py
+rm /home/ec2-user/RandomGrabs.py
+cp /home/ec2-user/RandomGrabs2.py /home/ec2-user/RandomGrabs.py
+rm /home/ec2-user/RandomGrabs2.py
+
+sed 's/twentyfivemintest10/fiftymintest1/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+
+#############################################################################################################################################################################
+#############################################################################################################################################################################
+
+#FIFTY MINUTE DATA RUNS
+
+#############################################################################################################################################################################
+#############################################################################################################################################################################
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest1/fiftymintest2/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest2/fiftymintest3/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest3/fiftymintest4/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest4/fiftymintest5/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest5/fiftymintest6/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest6/fiftymintest7/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest7/fiftymintest8/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest8/fiftymintest9/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
+sed 's/fiftymintest9/fiftymintest10/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs.yaml
+cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
+rm /home/ec2-user/randomgrabs2.yaml
+rm /home/ec2-user/randomgrabs/*
+nohup python /home/ec2-user/RandomGrabs.py>grabs.txt
+nohup PyBASC /home/ec2-user/randomgrabs.yaml>pybasc_output.txt
+
 #REPEAT_ HALF MINUTE DATA PREP
-sed 's/outputlength=750/outputlength=15/' /home/ec2-user/RandomGrabs.py>>/home/ec2-user/RandomGrabs2.py
+sed 's/outputlength=1500/outputlength=15/' /home/ec2-user/RandomGrabs.py>>/home/ec2-user/RandomGrabs2.py
 rm /home/ec2-user/RandomGrabs.py
 cp /home/ec2-user/RandomGrabs2.py /home/ec2-user/RandomGrabs.py
 rm /home/ec2-user/RandomGrabs2.py
@@ -792,7 +891,7 @@ rm /home/ec2-user/RandomGrabs.py
 cp /home/ec2-user/RandomGrabs2.py /home/ec2-user/RandomGrabs.py
 rm /home/ec2-user/RandomGrabs2.py
 
-sed 's/twentyfivemintest10/halfmintest1/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
+sed 's/fiftymintest10/halfmintest1/' /home/ec2-user/randomgrabs.yaml>>/home/ec2-user/randomgrabs2.yaml
 rm /home/ec2-user/randomgrabs.yaml
 cp /home/ec2-user/randomgrabs2.yaml /home/ec2-user/randomgrabs.yaml 
 rm /home/ec2-user/randomgrabs2.yaml
