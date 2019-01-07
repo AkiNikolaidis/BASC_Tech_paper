@@ -54,11 +54,14 @@ from sklearn.metrics import adjusted_rand_score
 
 
 
+os.mkdir('/home/ec2-user/similarity')
+os.mkdir('/home/ec2-user/similarity/Discriminability')
+
 reruns=10
 rerun_list= np.linspace(1,reruns,reruns)
 
-bootstrap_list=['1', '10','100','200','400','800']
-scantimelist=['halfmintest','onemintest','threemintest','fivemintest','tenmintest','fifteenmintest','twentymintest','twentyfivemintest']
+bootstrap_list=['1','10','100','200','400','800']
+scantimelist=['halfmintest','onemintest','threemintest','fivemintest','tenmintest','fifteenmintest','twentymintest','twentyfivemintest', 'fiftymintest']
 
 #scantimelist=['fifteenmintest']
 #bootstrap_list=['10','100','200','400','800']
@@ -87,7 +90,7 @@ for scantime in scantimelist:
             print(str(scantime) + 'scantime')
             print(str(bootstrap) + 'bootstrap')
             print(str(rerun) + 'rerun')
-            refdir=homedir + '/reftest/reftest/Run_1_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
+            refdir=homedir + '/ref_fulltest/Run_1_1600_correlation_ward_clusters-4_IndBS-' + bootstrap + '_block-1'
             
             ref_gsm_dir = refdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
             rep_gsm_dir = repdir + '/workflow_output/group_stability_matrix/group_stability_matrix.npz'
@@ -190,7 +193,7 @@ for scantime in scantimelist:
             all_ism=[allrep_ism,allref_ism]
             all_ism=pd.concat(all_ism, axis=1)
             spatialcorr=np.corrcoef(all_ism.T)
-            filename1='/home/ec2-user/similarity/Discriminability_SpatialCorr_'+str(scantime)+str(int(bootstrap))+'bootstraps'+str(int(rerun))+'rerun.csv'
+            filename1='/home/ec2-user/similarity/Discriminability/Discriminability_SpatialCorr_'+str(scantime)+str(int(bootstrap))+'bootstraps'+str(int(rerun))+'rerun.csv'
             np.savetxt(filename1, spatialcorr, delimiter=",")
 
 

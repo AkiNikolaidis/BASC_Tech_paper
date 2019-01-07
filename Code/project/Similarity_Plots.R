@@ -4,14 +4,14 @@ library(ggplot2)
 
 
 #GROUP LEVEL SPATIAL CORRELATION
-group_level_reproducibility <- read_csv("/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/similarity/group_level_reproducibility.csv")
+group_level_reproducibility <- read_csv("/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/similarity_50min/group_level_reproducibility.csv")
 
 
 Data<-group_level_reproducibility
 datavar=Data$gsm_repref_corr
 Data$bootstrap<- as.factor(Data$bootstrap)
 Data$scantime <- as.factor(Data$scantime)
-Data$scantime <- factor(Data$scantime,levels(Data$scantime)[c(3,4,6,2,5,1,8,7)])
+Data$scantime <- factor(Data$scantime,levels(Data$scantime)[c(4,5,7,3,6,1,9,8,2)])
 
 levels(Data$bootstrap)[levels(Data$bootstrap)=="1"] <- "0"
 
@@ -24,6 +24,8 @@ levels(Data$scantime)[levels(Data$scantime)=="tenmintest"] <- "Ten Minutes"
 levels(Data$scantime)[levels(Data$scantime)=="fifteenmintest"] <- "Fifteen Minutes"
 levels(Data$scantime)[levels(Data$scantime)=="twentymintest"] <- "Twenty Minutes"
 levels(Data$scantime)[levels(Data$scantime)=="twentyfivemintest"] <- "Twenty Five Minutes"
+levels(Data$scantime)[levels(Data$scantime)=="fiftymintest"] <- "Fifty Minutes"
+
 names(Data)[names(Data)=="scantime"]  <- "Time"
 
 pdf("Group_Spatial_Correlation_Reliability.pdf") 
@@ -52,14 +54,14 @@ dev.off()
 
 
 #GROUP LEVEL ADJUSTED RAND INDEX
-group_level_reproducibility <- read_csv("/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/similarity/group_level_reproducibility.csv")
+group_level_reproducibility <- read_csv("/Users/aki.nikolaidis/git_repo/BASC_Tech_paper/Data/similarity_50min/group_level_reproducibility.csv")
 
 
 Data<-group_level_reproducibility
 datavar=Data$group_label_acc
 Data$bootstrap<- as.factor(Data$bootstrap)
 Data$scantime <- as.factor(Data$scantime)
-Data$scantime <- factor(Data$scantime,levels(Data$scantime)[c(3,4,6,2,5,1,8,7)])
+Data$scantime <- factor(Data$scantime,levels(Data$scantime)[c(4,5,7,3,6,1,9,8,2)])
 
 levels(Data$bootstrap)[levels(Data$bootstrap)=="1"] <- "0"
 
@@ -72,6 +74,8 @@ levels(Data$scantime)[levels(Data$scantime)=="tenmintest"] <- "Ten Minutes"
 levels(Data$scantime)[levels(Data$scantime)=="fifteenmintest"] <- "Fifteen Minutes"
 levels(Data$scantime)[levels(Data$scantime)=="twentymintest"] <- "Twenty Minutes"
 levels(Data$scantime)[levels(Data$scantime)=="twentyfivemintest"] <- "Twenty Five Minutes"
+levels(Data$scantime)[levels(Data$scantime)=="fiftymintest"] <- "Fifty Minutes"
+
 names(Data)[names(Data)=="scantime"]  <- "Time"
 
 pdf("Group_Adjusted_Rand_Index_Reliability.pdf") 
@@ -106,9 +110,11 @@ dev.off()
 ## ALL INDIVIDUALS AS ONE LINE PLOT- SPATIAL CORRELATION
 library(plyr)
 library(dplyr)
-Data_ind<- read_csv("~/git_repo/BASC_Tech_paper/Data/similarity/all_individual_reproducibility.csv")
+Data_ind<- read_csv("~/git_repo/BASC_Tech_paper/Data/similarity_50min/all_individual_reproducibility.csv")
 
 Data_ind$scantime <- as.factor(Data_ind$scantime)
+#Data$scantime <- factor(Data$scantime,levels(Data$scantime)[c(4,5,7,3,6,1,9,8,2)])
+
 #Data_ind$scantime <- factor(Data_ind$scantime,levels(Data_ind$scantime)[c(3,4,6,2,5,1,8,7)])
 
 levels(Data_ind$bootstrap)[levels(Data_ind$bootstrap)=="1"] <- "0"
@@ -121,11 +127,13 @@ levels(Data_ind$scantime)[levels(Data_ind$scantime)=="tenmintest"] <- "Ten Minut
 levels(Data_ind$scantime)[levels(Data_ind$scantime)=="fifteenmintest"] <- "Fifteen Minutes"
 levels(Data_ind$scantime)[levels(Data_ind$scantime)=="twentymintest"] <- "Twenty Minutes"
 levels(Data_ind$scantime)[levels(Data_ind$scantime)=="twentyfivemintest"] <- "Twenty Five Minutes"
+levels(Data_ind$scantime)[levels(Data_ind$scantime)=="fiftymintest"] <- "Fifty Minutes"
+
 
 datavar_ind<-Data_ind$ism_repref_corr
 Data_ind$scantime <- as.factor(Data_ind$scantime)
 Data_ind$subject <- as.factor(Data_ind$subject)
-Data_ind$scantime <- factor(Data_ind$scantime,levels(Data_ind$scantime)[c(3,4,6,2,5,1,8,7)])
+Data_ind$scantime <- factor(Data_ind$scantime,levels(Data_ind$scantime)[c(4,5,7,3,6,1,9,8,2)])
 levels(Data_ind$bootstrap)[levels(Data_ind$bootstrap)=="1"] <- "0"
 
 summary_df = ddply(Data_ind, c("bootstrap", "scantime"), summarize, 
@@ -145,6 +153,7 @@ ggplot(data = summary_df,
                   fill = summary_df$scantime),
               linetype = 0) +
   scale_y_continuous(limits = c(0,1))+
+  scale_x_continuous(breaks = c(0,10,100,200,400,800), trans="sqrt") +
   theme_classic()+
   theme(axis.title.x = element_text(face="bold", size=16),
         axis.title.y = element_text(face="bold", size=16),
@@ -165,7 +174,7 @@ dev.off()
 ## ALL INDIVIDUALS AS ONE LINE PLOT- ADJUSTED RAND INDEX
 library(plyr)
 library(dplyr)
-Data_ind<- read_csv("~/git_repo/BASC_Tech_paper/Data/similarity/all_individual_reproducibility.csv")
+Data_ind<- read_csv("~/git_repo/BASC_Tech_paper/Data/similarity_50min/all_individual_reproducibility.csv")
 
 Data_ind$scantime <- as.factor(Data_ind$scantime)
 #Data_ind$scantime <- factor(Data_ind$scantime,levels(Data_ind$scantime)[c(3,4,6,2,5,1,8,7)])
@@ -180,11 +189,13 @@ levels(Data_ind$scantime)[levels(Data_ind$scantime)=="tenmintest"] <- "Ten Minut
 levels(Data_ind$scantime)[levels(Data_ind$scantime)=="fifteenmintest"] <- "Fifteen Minutes"
 levels(Data_ind$scantime)[levels(Data_ind$scantime)=="twentymintest"] <- "Twenty Minutes"
 levels(Data_ind$scantime)[levels(Data_ind$scantime)=="twentyfivemintest"] <- "Twenty Five Minutes"
+levels(Data_ind$scantime)[levels(Data_ind$scantime)=="fiftymintest"] <- "Fifty Minutes"
+
 
 datavar_ind<-Data_ind$ref_rep_indgrp_label_ARI
 Data_ind$scantime <- as.factor(Data_ind$scantime)
 Data_ind$subject <- as.factor(Data_ind$subject)
-Data_ind$scantime <- factor(Data_ind$scantime,levels(Data_ind$scantime)[c(3,4,6,2,5,1,8,7)])
+Data_ind$scantime <- factor(Data_ind$scantime,levels(Data_ind$scantime)[c(4,5,7,3,6,1,9,8,2)])
 levels(Data_ind$bootstrap)[levels(Data_ind$bootstrap)=="1"] <- "0"
 
 summary_df = ddply(Data_ind, c("bootstrap", "scantime"), summarize, 
@@ -204,6 +215,9 @@ ggplot(data = summary_df,
                   fill = summary_df$scantime),
               linetype = 0) +
   scale_y_continuous(limits = c(0,1))+
+  #scale_x_discrete(breaks=factor(summary_df$bootstrap), limit=factor(summary_df$bootstrap))+
+  scale_x_continuous(breaks = c(0,10,100,200,400,800), trans="sqrt") +
+  
   theme_classic()+
   theme(axis.title.x = element_text(face="bold", size=16),
         axis.title.y = element_text(face="bold", size=16),

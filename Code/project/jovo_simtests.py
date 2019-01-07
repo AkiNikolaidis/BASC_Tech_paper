@@ -482,19 +482,25 @@ import numpy as np
 import scipy as sp
 import seaborn as sns
 import pandas as pd
-import basc
-import utils
+import PyBASC.basc as basc
+import PyBASC.utils as utils
 import os
 #import __init__
-from utils import timeseries_bootstrap, adjacency_matrix
+from PyBASC.utils import timeseries_bootstrap, adjacency_matrix
+from PyBASC.basc import ndarray_to_vol
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
 from sklearn import cluster, datasets, preprocessing
 import seaborn as sns; sns.set(style="ticks", color_codes=True)
 
 
-#Reg1_True=np.load('/Users/aki.nikolaidis/git_repo/PyBASC/Reg1_True.npy')
-#Reg2_True=np.load('/Users/aki.nikolaidis/git_repo/PyBASC/Reg2_True.npy')
+homedir='/Users/aki.nikolaidis/git_repo'
+
+os.mkdir(homedir+'/PyBASC/Sim_Data')
+os.mkdir(homedir+'/PyBASC/temp')
+
+#Reg1_True=np.load(homedir + '/PyBASC/Reg1_True.npy')
+#Reg2_True=np.load(homedir + '/PyBASC/Reg2_True.npy')
 
 
 #NOTES
@@ -521,15 +527,15 @@ TrueBGClust[3059:4332,3059:4332]=1
 #truth1500_1[1000:1500,1000:1500]=1
 
 
-numsub=10
+numsub=30
 motorvox=11656
 visualvox=11941
 
-n_list=[200]
+n_list=[100,200,400,800]
 n_clusters_list=[2]
-corrstrength_list=[0.05,0.3]
+corrstrength_list=[0.05]
 bootstraps_list=[1]
-noiselevel_list=[2, 3]
+noiselevel_list=[2.5]
 
 for subs in range(numsub):
     print(subs)
@@ -614,37 +620,37 @@ for n in n_list:
                 SimVisual=np.reshape(SimVisual,(visualvox,n))
 
                 data_array_right = SimBG_right
-                roi_mask_file_right = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Right_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
-                sample_file_right = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Right_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
-                filename_right = '/Users/aki.nikolaidis/git_repo/PyBASC/SimData4/SimBG_right_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
+                roi_mask_file_right = homedir + '/PyBASC/PyBASC/masks/oldmasks/Right_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
+                sample_file_right = homedir + '/PyBASC/PyBASC/masks/oldmasks/Right_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
+                filename_right = homedir + '/PyBASC/temp/SimBG_right_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
                 
                 data_array_thal = SimBG_thal
-                roi_mask_file_thal = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Bilateral_Thalamus3mm.nii.gz'
-                sample_file_thal = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Bilateral_Thalamus3mm.nii.gz'
-                filename_thal = '/Users/aki.nikolaidis/git_repo/PyBASC/SimData4/SimBG_Thal_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
+                roi_mask_file_thal = homedir + '/PyBASC/PyBASC/masks/Bilateral_Thalamus3mm.nii.gz'
+                sample_file_thal = homedir + '/PyBASC/PyBASC/masks/Bilateral_Thalamus3mm.nii.gz'
+                filename_thal = homedir + '/PyBASC/temp/SimBG_Thal_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
                 
                 data_array_left = SimBG_left
-                roi_mask_file_left = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Left_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
-                sample_file_left = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Left_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
-                filename_left = '/Users/aki.nikolaidis/git_repo/PyBASC/SimData4/SimBG_left_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
+                roi_mask_file_left = homedir + '/PyBASC/PyBASC/masks/oldmasks/Left_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
+                sample_file_left = homedir + '/PyBASC/PyBASC/masks/oldmasks/Left_Caud_Put_Pall_bin_thresh_3mm.nii.gz'
+                filename_left = homedir + '/PyBASC/temp/SimBG_left_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
                 
-                #roi_mask_file='/Users/aki.nikolaidis/git_repo/PyBASC/masks/Yeo7_3mmMasks/BilateralStriatumThalamus_3mm.nii.gz'
-                #roi2_mask_file='/Users/aki.nikolaidis/git_repo/PyBASC/masks/Yeo7_3mmMasks/Yeo_All_7_3mm.nii.gz'
+                #roi_mask_file=homedir + '/PyBASC/masks/Yeo7_3mmMasks/BilateralStriatumThalamus_3mm.nii.gz'
+                #roi2_mask_file=homedir + '/PyBASC/masks/Yeo7_3mmMasks/Yeo_All_7_3mm.nii.gz'
     
                 data_array2 = SimVisual
-                roi_mask_file2 = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Yeo7_3mmMasks/Yeo_1_3mm.nii.gz'
-                sample_file2 = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Yeo7_3mmMasks/Yeo_1_3mm.nii.gz'
-                filename2 = '/Users/aki.nikolaidis/git_repo/PyBASC/SimData4/SimVisual_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
+                roi_mask_file2 = homedir + '/PyBASC/PyBASC/masks/Yeo7_3mmMasks/Yeo_1_3mm.nii.gz'
+                sample_file2 = homedir + '/PyBASC/PyBASC/masks/Yeo7_3mmMasks/Yeo_1_3mm.nii.gz'
+                filename2 = homedir + '/PyBASC/temp/SimVisual_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
                 
                 data_array3 = SimMotor
-                roi_mask_file3 = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz'
-                sample_file3 = '/Users/aki.nikolaidis/git_repo/PyBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz'
-                filename3 = '/Users/aki.nikolaidis/git_repo/PyBASC/SimData4/SimMotor_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
+                roi_mask_file3 = homedir + '/PyBASC/PyBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz'
+                sample_file3 = homedir + '/PyBASC/PyBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz'
+                filename3 = homedir + '/PyBASC/temp/SimMotor_' + 'sub_'+ str(subs) +'corrstrength_' + str(corrstrength) + 'noise_' + str(noiselevel) + '.nii.gz'
                 
               
-                
                 #write Regions to nifti file
-                basc.ndarray_to_vol(data_array_right, roi_mask_file_right, sample_file_right, filename_right)
+                ndarray_to_vol(data_array_right, roi_mask_file_right, sample_file_right, filename_right)
+                #import pdb; pdb.set_trace()
                 basc.ndarray_to_vol(data_array_thal, roi_mask_file_thal, sample_file_thal, filename_thal)
                 basc.ndarray_to_vol(data_array_left, roi_mask_file_left, sample_file_left, filename_left)
                 #write Region One to nifti file
@@ -652,12 +658,11 @@ for n in n_list:
                 #
                 basc.ndarray_to_vol(data_array3, roi_mask_file3, sample_file3, filename3)
                 
-                niftiadditionfile='fslmaths ' + filename_right + ' -add ' + filename_thal + ' -add ' + filename_left + ' -add ' + filename2 + ' -add ' + filename3 + ' /Users/aki.nikolaidis/git_repo/PyBASC/SimData4/sub_' + str(subs) +'corr_' + str(corrstrength) + '_noise_' + str(noiselevel) + '_TRs_' + str(n) + '.nii.gz'
+                niftiadditionfile='fslmaths ' + filename_right + ' -add ' + filename_thal + ' -add ' + filename_left + ' -add ' + filename2 + ' -add ' + filename3 + ' ' + homedir + '/PyBASC/Sim_Data/sub_' + str(subs) +'corr_' + str(corrstrength) + '_noise_' + str(noiselevel) + '_TRs_' + str(n) + '.nii.gz'
     
                 os.system(niftiadditionfile)
                 
-                os.system('rm /Users/aki.nikolaidis/git_repo/PyBASC/SimData4/Sim*')
-                
+                os.system('rm '+ homedir + '/PyBASC/temp/Sim*')
                 
 
 #%%    
