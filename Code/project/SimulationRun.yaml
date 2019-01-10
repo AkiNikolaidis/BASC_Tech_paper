@@ -1,0 +1,87 @@
+analysis_ID: Simulation_100
+home: /home/ec2-user
+run: True
+
+proc_mem:
+    - 4
+    - 28
+
+    
+reruns: 50
+
+affinity_thresh: 0.0
+
+blocklength_list:
+    - 1 
+    
+dataset_bootstrap_list:
+    - 10
+    - 100
+    - 200
+    - 400
+    - 800
+
+timeseries_bootstrap_list:
+    - 10
+    - 100
+    - 200
+    - 400
+    - 800
+
+group_dim_reduce: True
+
+n_clusters_list:
+   - 2
+
+    
+output_sizes:
+    - 1600
+
+similarity_metric_list:
+    - correlation
+    # - euclidean
+    # - cityblock
+    # - cosine
+
+cluster_methods:
+    - ward
+
+roi_mask_file: $PYBASC/masks/Full_BG_Sim_3mm.nii.gz
+
+cross_cluster: True
+cross_cluster_mask_file: $PYBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz
+
+
+
+subject_file_list:
+        - /home/ec2-user/repdata/0025427.nii.gz
+        - /home/ec2-user/repdata/0025428.nii.gz
+        - /home/ec2-user/repdata/0025429.nii.gz
+        - /home/ec2-user/repdata/0025430.nii.gz
+        - /home/ec2-user/repdata/0025431.nii.gz
+        - /home/ec2-user/repdata/0025432.nii.gz
+        - /home/ec2-user/repdata/0025433.nii.gz
+        - /home/ec2-user/repdata/0025434.nii.gz
+        - /home/ec2-user/repdata/0025435.nii.gz
+        - /home/ec2-user/repdata/0025436.nii.gz
+        - /home/ec2-user/repdata/0025437.nii.gz
+        - /home/ec2-user/repdata/0025438.nii.gz
+        - /home/ec2-user/repdata/0025439.nii.gz
+        - /home/ec2-user/repdata/0025440.nii.gz
+        - /home/ec2-user/repdata/0025441.nii.gz
+        - /home/ec2-user/repdata/0025442.nii.gz
+        - /home/ec2-user/repdata/0025443.nii.gz
+        - /home/ec2-user/repdata/0025444.nii.gz
+        - /home/ec2-user/repdata/0025445.nii.gz
+        - /home/ec2-user/repdata/0025446.nii.gz
+        - /home/ec2-user/repdata/0025447.nii.gz
+        - /home/ec2-user/repdata/0025448.nii.gz
+        - /home/ec2-user/repdata/0025449.nii.gz
+        - /home/ec2-user/repdata/0025450.nii.gz
+        - /home/ec2-user/repdata/0025451.nii.gz
+        - /home/ec2-user/repdata/0025452.nii.gz
+        - /home/ec2-user/repdata/0025453.nii.gz
+        - /home/ec2-user/repdata/0025454.nii.gz
+        - /home/ec2-user/repdata/0025455.nii.gz
+        - /home/ec2-user/repdata/0025456.nii.gz
+

@@ -1,0 +1,85 @@
+analysis_ID: Simulation_800
+home: /home/ec2-user
+run: True
+
+proc_mem:
+    - 4
+    - 28
+
+    
+reruns: 50
+
+affinity_thresh: 0.0
+
+blocklength_list:
+    - 1 
+    
+dataset_bootstrap_list:
+    - 10
+    - 100
+    - 200
+    - 400
+    - 800
+
+timeseries_bootstrap_list:
+    - 10
+    - 100
+    - 200
+    - 400
+    - 800
+
+group_dim_reduce: True
+
+n_clusters_list:
+   - 2
+
+    
+output_sizes:
+    - 1600
+
+similarity_metric_list:
+    - correlation
+    # - euclidean
+    # - cityblock
+    # - cosine
+
+cluster_methods:
+    - ward
+
+roi_mask_file: $PYBASC/masks/Full_BG_Sim_3mm.nii.gz
+
+cross_cluster: True
+cross_cluster_mask_file: $PYBASC/masks/Yeo7_3mmMasks/Yeo_2_3mm.nii.gz
+
+
+subject_file_list:
+        - /home/ec2-user/800/sub_0corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_1corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_2corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_3corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_4corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_5corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_6corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_7corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_8corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_9corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_10corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_11corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_12corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_13corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_14corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_15corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_16corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_17corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_18corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_19corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_20corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_21corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_22corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_23corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_24corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_25corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_26corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_27corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_28corr_0.05_noise_2.5_TRs_800.nii.gz
+        - /home/ec2-user/800/sub_29corr_0.05_noise_2.5_TRs_800.nii.gz
