@@ -494,10 +494,14 @@ from sklearn import cluster, datasets, preprocessing
 import seaborn as sns; sns.set(style="ticks", color_codes=True)
 
 
-homedir='/Users/aki.nikolaidis/git_repo'
+homedir='/home/anikolai/git_repo'
 
 os.mkdir(homedir+'/PyBASC/Sim_Data')
 os.mkdir(homedir+'/PyBASC/temp')
+os.mkdir(homedir+'/PyBASC/Sim_Data/100')
+os.mkdir(homedir+'/PyBASC/Sim_Data/200')
+os.mkdir(homedir+'/PyBASC/Sim_Data/400')
+os.mkdir(homedir+'/PyBASC/Sim_Data/800')
 
 #Reg1_True=np.load(homedir + '/PyBASC/Reg1_True.npy')
 #Reg2_True=np.load(homedir + '/PyBASC/Reg2_True.npy')
@@ -658,7 +662,7 @@ for n in n_list:
                 #
                 basc.ndarray_to_vol(data_array3, roi_mask_file3, sample_file3, filename3)
                 
-                niftiadditionfile='fslmaths ' + filename_right + ' -add ' + filename_thal + ' -add ' + filename_left + ' -add ' + filename2 + ' -add ' + filename3 + ' ' + homedir + '/PyBASC/Sim_Data/sub_' + str(subs) +'corr_' + str(corrstrength) + '_noise_' + str(noiselevel) + '_TRs_' + str(n) + '.nii.gz'
+                niftiadditionfile='fslmaths ' + filename_right + ' -add ' + filename_thal + ' -add ' + filename_left + ' -add ' + filename2 + ' -add ' + filename3 + ' ' + homedir + '/PyBASC/Sim_Data/'+ str(n) +'/sub_' + str(subs) +'corr_' + str(corrstrength) + '_noise_' + str(noiselevel) + '_TRs_' + str(n) + '.nii.gz'
     
                 os.system(niftiadditionfile)
                 
