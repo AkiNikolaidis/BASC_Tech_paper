@@ -7,7 +7,7 @@ proc_mem:
     - 200
 
     
-reruns: 10
+reruns: 1
 
 affinity_thresh: 0.0
 
@@ -15,9 +15,11 @@ blocklength_list:
     - 1 
     
 dataset_bootstrap_list:
+    - 1
     - 800
 
 timeseries_bootstrap_list:
+    - 1
     - 800
 
 group_dim_reduce: False
